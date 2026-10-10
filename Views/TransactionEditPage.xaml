@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.TransactionEditPage"
+             x:DataType="vm:TransactionEditViewModel"
+             Title="Transaction"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="{Binding ScreenTitle}" StyleClass="Title" />
+                    <Label Text="Credits add to your balance, debits reduce it." StyleClass="Muted" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Type" StyleClass="FieldLabel" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Types}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Amount (₹)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Entry Text="{Binding AmountText}" Placeholder="0.00" Keyboard="Numeric" AutomationId="TxAmount" /></Border>
+                        <Label Text="{Binding AmountError}" StyleClass="Error" IsVisible="{Binding AmountError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Category" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Picker Title="Select a category" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" /></Border>
+                        <Label Text="{Binding CategoryError}" StyleClass="Error" IsVisible="{Binding CategoryError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Description" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Description}" Placeholder="What was this for?" Keyboard="Default"  />
+                        </Border>
+                        <Label Text="{Binding DescriptionError}" StyleClass="Error" IsVisible="{Binding DescriptionError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Date" StyleClass="FieldLabel" />
+                            <Border StyleClass="Field"><DatePicker Date="{Binding Date}" MaximumDate="{Binding MaxDate}" /></Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Time" StyleClass="FieldLabel" />
+                            <Border StyleClass="Field"><TimePicker Time="{Binding Time}" /></Border>
+                        </VerticalStackLayout>
+                    </Grid><VerticalStackLayout Spacing="6">
+                        <Label Text="Notes (optional)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Editor Text="{Binding Notes}" HeightRequest="90" AutoSize="Disabled" Placeholder="Any extra detail" /></Border>
+                    </VerticalStackLayout><Label Text="{Binding ErrorMessage}" StyleClass="Error" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" /><Button Text="Save transaction" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}" AutomationId="SaveTransaction" />
+                    <Button Text="Delete transaction" StyleClass="Outline" Command="{Binding DeleteCommand}" IsVisible="{Binding IsEditing}"
+                            TextColor="{StaticResource Danger}" BorderColor="{StaticResource Danger}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

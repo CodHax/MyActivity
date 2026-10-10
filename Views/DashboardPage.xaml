@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.DashboardPage"
+             x:DataType="vm:DashboardViewModel"
+             Title="Home"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,44,20,28" Spacing="18">
+
+            <!-- Profile -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Border WidthRequest="60" HeightRequest="60" StrokeThickness="0"
+                        BackgroundColor="{StaticResource Primary}">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="30" /></Border.StrokeShape>
+                    <Label Text="{Binding Initials}" TextColor="White" FontFamily="OpenSansSemibold" FontSize="21"
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                    <Label Text="{Binding Greeting}" StyleClass="Heading" />
+                    <Label Text="{Binding EmployeeId, StringFormat='Employee ID: {0}'}" StyleClass="Muted" />
+                    <Label Text="{Binding TodayText}" StyleClass="Muted" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Notifications off banner -->
+            <Border StyleClass="Card" Padding="16" IsVisible="{Binding NotificationsOff}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Reminders are off" StyleClass="Heading" />
+                    <Label Text="Turn on notifications so My Activity can remind you to mark attendance." StyleClass="Muted" />
+                    <Button Text="Turn on notifications" Command="{Binding EnableNotificationsCommand}" HeightRequest="46" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Today's attendance -->
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Today's attendance" StyleClass="Heading" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Check-in" FontFamily="OpenSansSemibold" />
+                            <Label Text="{Binding CheckInDetail}" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" Padding="12,5" StrokeThickness="0" VerticalOptions="Center"
+                                BackgroundColor="{Binding CheckInColor}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Label Text="{Binding CheckInStatus}" TextColor="White" FontSize="13" FontFamily="OpenSansSemibold" />
+                        </Border>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Check-out" FontFamily="OpenSansSemibold" />
+                            <Label Text="{Binding CheckOutDetail}" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" Padding="12,5" StrokeThickness="0" VerticalOptions="Center"
+                                BackgroundColor="{Binding CheckOutColor}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Label Text="{Binding CheckOutStatus}" TextColor="White" FontSize="13" FontFamily="OpenSansSemibold" />
+                        </Border>
+                    </Grid>
+
+                    <Button Text="Open attendance" StyleClass="Outline" HeightRequest="46"
+                            Command="{Binding OpenModuleCommand}" CommandParameter="attendance" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Quick access -->
+            <Label Text="Quick access" StyleClass="Heading" />
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                <Border StyleClass="Card" Padding="16" Grid.Row="0" Grid.Column="0" AutomationId="TileAttendance">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenModuleCommand}" CommandParameter="attendance" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="📅" FontSize="26" />
+                        <Label Text="Attendance" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border StyleClass="Card" Padding="16" Grid.Row="0" Grid.Column="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenModuleCommand}" CommandParameter="account" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="💼" FontSize="26" />
+                        <Label Text="Account" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border StyleClass="Card" Padding="16" Grid.Row="1" Grid.Column="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenModuleCommand}" CommandParameter="calculators" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="🧮" FontSize="26" />
+                        <Label Text="Calculators" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border StyleClass="Card" Padding="16" Grid.Row="1" Grid.Column="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenModuleCommand}" CommandParameter="meetings" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="👥" FontSize="26" />
+                        <Label Text="Meetings" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border StyleClass="Card" Padding="16" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenModuleCommand}" CommandParameter="tasks" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="📝" FontSize="26" VerticalOptions="Center" />
+                        <Label Text="Tasks and notes" FontFamily="OpenSansSemibold" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Account summary -->
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Account summary" StyleClass="Heading" />
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Credit" StyleClass="Muted" />
+                            <Label Text="{Binding CreditText}" FontFamily="OpenSansSemibold" TextColor="{StaticResource Success}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Debit" StyleClass="Muted" />
+                            <Label Text="{Binding DebitText}" FontFamily="OpenSansSemibold" TextColor="{StaticResource Danger}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="2" Spacing="2">
+                            <Label Text="Balance" StyleClass="Muted" />
+                            <Label Text="{Binding BalanceText}" FontFamily="OpenSansSemibold" TextColor="{Binding BalanceColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Upcoming -->
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Upcoming meeting" StyleClass="Muted" />
+                        <Label Text="{Binding UpcomingMeetingText}" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Upcoming task" StyleClass="Muted" />
+                        <Label Text="{Binding UpcomingTaskText}" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

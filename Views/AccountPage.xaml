@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.AccountPage"
+             x:DataType="vm:AccountViewModel"
+             Title="Account"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20,44,20,110" Spacing="16">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Account" StyleClass="Title" />
+                    <Label Text="Your personal ledger" StyleClass="Muted" />
+                </VerticalStackLayout>
+
+                <Border StyleClass="Card">
+                    <VerticalStackLayout Spacing="14">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Current balance" StyleClass="Muted" />
+                            <Label Text="{Binding BalanceText}" FontFamily="OpenSansSemibold" FontSize="34"
+                                   TextColor="{Binding BalanceColor}" AutomationId="AccountBalance" />
+                        </VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Total credit" StyleClass="Muted" />
+                                <Label Text="{Binding CreditText}" FontFamily="OpenSansSemibold" TextColor="{StaticResource Success}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="Total debit" StyleClass="Muted" />
+                                <Label Text="{Binding DebitText}" FontFamily="OpenSansSemibold" TextColor="{StaticResource Danger}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Recent transactions" StyleClass="Heading" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="View all" StyleClass="Link" Command="{Binding ViewAllCommand}" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Recent}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:TransactionItem">
+                        <Border StyleClass="Card" Padding="14">
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding EditCommand}" /></Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="{Binding Description}" FontFamily="OpenSansSemibold" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding CategoryText}" StyleClass="Muted" />
+                                    <Label Text="{Binding DateText}" StyleClass="Muted" FontSize="12" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="{Binding AmountText}" TextColor="{Binding AmountColor}"
+                                       FontFamily="OpenSansSemibold" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding IsEmpty}" Padding="0,24" Spacing="6" HorizontalOptions="Center">
+                    <Label Text="No transactions yet" StyleClass="Heading" HorizontalOptions="Center" />
+                    <Label Text="Tap + to add your first credit or debit." StyleClass="Muted" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <Button Text="+" StyleClass="Fab" Command="{Binding AddCommand}" AutomationId="AddTransaction" />
+    </Grid>
+</ContentPage>

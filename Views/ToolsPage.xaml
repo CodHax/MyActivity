@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.ToolsPage"
+             x:DataType="vm:ToolsViewModel"
+             Title="Tools"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,44,20,28" Spacing="16">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Tools" StyleClass="Title" />
+                <Label Text="Calculators and productivity" StyleClass="Muted" />
+            </VerticalStackLayout>
+            <Label Text="Calculators" StyleClass="Heading" />
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                    <Border StyleClass="Card" Padding="16" Grid.Row="0" Grid.Column="0">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="calcbasic" /></Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="🧮" FontSize="26" />
+                            <Label Text="Basic" FontFamily="OpenSansSemibold" />
+                            <Label Text="Everyday maths" StyleClass="Muted" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="Card" Padding="16" Grid.Row="0" Grid.Column="1">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="calcemi" /></Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="🏦" FontSize="26" />
+                            <Label Text="EMI" FontFamily="OpenSansSemibold" />
+                            <Label Text="Loan instalments" StyleClass="Muted" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="Card" Padding="16" Grid.Row="1" Grid.Column="0">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="calcsip" /></Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="📈" FontSize="26" />
+                            <Label Text="SIP" FontFamily="OpenSansSemibold" />
+                            <Label Text="Monthly investing" StyleClass="Muted" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="Card" Padding="16" Grid.Row="1" Grid.Column="1">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="calcswp" /></Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="💸" FontSize="26" />
+                            <Label Text="SWP" FontFamily="OpenSansSemibold" />
+                            <Label Text="Regular withdrawals" StyleClass="Muted" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                    
+            </Grid>
+            <Label Text="Productivity" StyleClass="Heading" Margin="0,8,0,0" />
+            <Border StyleClass="Card" Padding="16">
+                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="meetings" /></Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="14">
+                    <Label Text="👥" FontSize="26" VerticalOptions="Center" />
+                    <VerticalStackLayout VerticalOptions="Center"><Label Text="Meetings" FontFamily="OpenSansSemibold" /><Label Text="Schedule and get reminders" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+            <Border StyleClass="Card" Padding="16">
+                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" CommandParameter="tasks" /></Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="14">
+                    <Label Text="📝" FontSize="26" VerticalOptions="Center" />
+                    <VerticalStackLayout VerticalOptions="Center"><Label Text="Tasks and notes" FontFamily="OpenSansSemibold" /><Label Text="To-dos with optional reminders" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

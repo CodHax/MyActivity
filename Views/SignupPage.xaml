@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.SignupPage"
+             x:DataType="vm:SignupViewModel"
+             Title="Create account"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,32,24,24" Spacing="20">
+
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Create your account" StyleClass="Title" />
+                <Label Text="Your data stays on this device." StyleClass="Muted" />
+            </VerticalStackLayout>
+
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Employee ID" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding EmployeeId}" Placeholder="e.g. EMP1024" ReturnType="Next"
+                                   IsTextPredictionEnabled="False" AutomationId="SignupEmployeeId" />
+                        </Border>
+                        <Label Text="{Binding EmployeeIdError}" StyleClass="Error"
+                               IsVisible="{Binding EmployeeIdError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Full name" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding FullName}" Placeholder="Your full name" ReturnType="Next" />
+                        </Border>
+                        <Label Text="{Binding FullNameError}" StyleClass="Error"
+                               IsVisible="{Binding FullNameError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Email" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Email}" Placeholder="you@company.com" Keyboard="Email"
+                                   IsTextPredictionEnabled="False" ReturnType="Next" />
+                        </Border>
+                        <Label Text="{Binding EmailError}" StyleClass="Error"
+                               IsVisible="{Binding EmailError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Password" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Entry Text="{Binding Password}" Placeholder="At least 8 characters, with a number"
+                                       IsPassword="{Binding IsPasswordHidden}" ReturnType="Next" />
+                                <Button Grid.Column="1" Text="{Binding PasswordToggleText}" StyleClass="Link"
+                                        Command="{Binding TogglePasswordCommand}" WidthRequest="64" Padding="0" />
+                            </Grid>
+                        </Border>
+                        <Label Text="{Binding PasswordError}" StyleClass="Error"
+                               IsVisible="{Binding PasswordError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Confirm password" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding ConfirmPassword}" Placeholder="Re-enter your password"
+                                   IsPassword="{Binding IsPasswordHidden}" ReturnType="Done"
+                                   ReturnCommand="{Binding SignupCommand}" />
+                        </Border>
+                        <Label Text="{Binding ConfirmPasswordError}" StyleClass="Error"
+                               IsVisible="{Binding ConfirmPasswordError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                           IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+
+                    <Button Text="Create account" Command="{Binding SignupCommand}" IsEnabled="{Binding IsNotBusy}"
+                            AutomationId="SignupButton" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Back to log in" StyleClass="Link" Command="{Binding BackCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

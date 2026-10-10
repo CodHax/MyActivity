@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.MeetingsPage"
+             x:DataType="vm:MeetingsViewModel"
+             Title="Meetings"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20,36,20,0" RowSpacing="10">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Meetings" StyleClass="Title" />
+                <Label Text="Schedule, remind, review" StyleClass="Muted" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+        </Grid>
+        <FlexLayout Grid.Row="1" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Items}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="0,40" Spacing="6" HorizontalOptions="Center">
+                    <Label Text="{Binding EmptyTitle}" StyleClass="Heading" HorizontalOptions="Center" />
+                    <Label Text="{Binding EmptyHint}" StyleClass="Muted" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:MeetingItem">
+                    <Border StyleClass="Card" Padding="14" Margin="0,0,0,10">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" /></Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="3">
+                            <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" FontSize="16" />
+                            <Label Text="{Binding DateText}" StyleClass="Muted" />
+                            <Label Text="{Binding TimeText}" TextColor="{StaticResource Primary}" FontFamily="OpenSansSemibold" FontSize="14" />
+                            <Label Text="{Binding LocationText}" StyleClass="Muted" IsVisible="{Binding HasLocation}" />
+                            <Label Text="{Binding ReminderText}" StyleClass="Muted" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="2" Text="+" StyleClass="Fab" Command="{Binding AddCommand}" AutomationId="AddMeeting" />
+    </Grid>
+</ContentPage>

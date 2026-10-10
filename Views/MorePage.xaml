@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.MorePage"
+             x:DataType="vm:MoreViewModel"
+             Title="More"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,44,20,28" Spacing="16">
+            <Label Text="More" StyleClass="Title" />
+            <Border StyleClass="Card">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border WidthRequest="56" HeightRequest="56" StrokeThickness="0" BackgroundColor="{StaticResource Primary}">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="28" /></Border.StrokeShape>
+                        <Label Text="{Binding Initials}" TextColor="White" FontFamily="OpenSansSemibold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding FullName}" StyleClass="Heading" />
+                        <Label Text="{Binding EmployeeId, StringFormat='Employee ID: {0}'}" StyleClass="Muted" />
+                        <Label Text="{Binding Email}" StyleClass="Muted" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Appearance" StyleClass="Heading" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Themes}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+                </VerticalStackLayout>
+            </Border><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Notifications" StyleClass="Heading" /><Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2"><Label Text="All notifications" FontFamily="OpenSansSemibold" /><Label Text="Master switch for every reminder" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding NotificationsEnabled}"  VerticalOptions="Center" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2"><Label Text="Attendance reminders" FontFamily="OpenSansSemibold" /><Label Text="Check-in and check-out alerts" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding AttendanceReminders}" IsEnabled="{Binding NotificationsEnabled}" VerticalOptions="Center" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2"><Label Text="Meeting reminders" FontFamily="OpenSansSemibold" /><Label Text="Before each meeting starts" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding MeetingReminders}" IsEnabled="{Binding NotificationsEnabled}" VerticalOptions="Center" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2"><Label Text="Task reminders" FontFamily="OpenSansSemibold" /><Label Text="At the time you set" StyleClass="Muted" FontSize="12" /></VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding TaskReminders}" IsEnabled="{Binding NotificationsEnabled}" VerticalOptions="Center" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Account" StyleClass="Heading" />
+                    <Button Text="Change password" StyleClass="Outline" Command="{Binding ChangePasswordCommand}" />
+                    <Button Text="About My Activity" StyleClass="Link" Command="{Binding AboutCommand}" />
+                    <Label Text="{Binding VersionText}" StyleClass="Muted" HorizontalTextAlignment="Center" FontSize="12" />
+                </VerticalStackLayout>
+            </Border><Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+            <Button Text="Log out" StyleClass="Outline" Command="{Binding LogoutCommand}" AutomationId="LogoutButton"
+                    TextColor="{StaticResource Danger}" BorderColor="{StaticResource Danger}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

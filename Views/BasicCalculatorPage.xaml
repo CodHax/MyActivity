@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.BasicCalculatorPage"
+             x:DataType="vm:BasicCalculatorViewModel"
+             Title="Basic calculator"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16,36,16,16" RowSpacing="8">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Padding="4,0">
+            <Label Text="Calculator" StyleClass="Title" />
+            <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Padding="12,16" Spacing="4" VerticalOptions="End">
+            <Label Text="{Binding Expression}" StyleClass="Muted" HorizontalTextAlignment="End" HeightRequest="22" LineBreakMode="HeadTruncation" />
+            <Label Text="{Binding Display}" FontSize="{Binding DisplayFontSize}" FontFamily="OpenSansSemibold"
+                   HorizontalTextAlignment="End" LineBreakMode="NoWrap" MaxLines="1" AutomationId="CalcDisplay" />
+        </VerticalStackLayout>
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" RowDefinitions="*,*,*,*,*">
+            <Button Grid.Row="0" Grid.Column="0" Text="C" StyleClass="CalcFn" Command="{Binding KeyCommand}" CommandParameter="C" />
+            <Button Grid.Row="0" Grid.Column="1" Text="±" StyleClass="CalcFn" Command="{Binding KeyCommand}" CommandParameter="N" />
+            <Button Grid.Row="0" Grid.Column="2" Text="%" StyleClass="CalcFn" Command="{Binding KeyCommand}" CommandParameter="%" />
+            <Button Grid.Row="0" Grid.Column="3" Text="÷" StyleClass="CalcOp" Command="{Binding KeyCommand}" CommandParameter="/" />
+            <Button Grid.Row="1" Grid.Column="0" Text="7" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="7" />
+            <Button Grid.Row="1" Grid.Column="1" Text="8" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="8" />
+            <Button Grid.Row="1" Grid.Column="2" Text="9" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="9" />
+            <Button Grid.Row="1" Grid.Column="3" Text="×" StyleClass="CalcOp" Command="{Binding KeyCommand}" CommandParameter="*" />
+            <Button Grid.Row="2" Grid.Column="0" Text="4" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="4" />
+            <Button Grid.Row="2" Grid.Column="1" Text="5" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="5" />
+            <Button Grid.Row="2" Grid.Column="2" Text="6" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="6" />
+            <Button Grid.Row="2" Grid.Column="3" Text="−" StyleClass="CalcOp" Command="{Binding KeyCommand}" CommandParameter="-" />
+            <Button Grid.Row="3" Grid.Column="0" Text="1" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="1" />
+            <Button Grid.Row="3" Grid.Column="1" Text="2" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="2" />
+            <Button Grid.Row="3" Grid.Column="2" Text="3" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="3" />
+            <Button Grid.Row="3" Grid.Column="3" Text="+" StyleClass="CalcOp" Command="{Binding KeyCommand}" CommandParameter="+" />
+            <Button Grid.Row="4" Grid.Column="0" Text="⌫" StyleClass="CalcFn" Command="{Binding KeyCommand}" CommandParameter="B" />
+            <Button Grid.Row="4" Grid.Column="1" Text="0" StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="0" />
+            <Button Grid.Row="4" Grid.Column="2" Text="." StyleClass="CalcKey" Command="{Binding KeyCommand}" CommandParameter="." />
+            <Button Grid.Row="4" Grid.Column="3" Text="=" StyleClass="CalcEq" Command="{Binding KeyCommand}" CommandParameter="=" />
+        </Grid>
+    </Grid>
+</ContentPage>

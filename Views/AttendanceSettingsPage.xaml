@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.AttendanceSettingsPage"
+             x:DataType="vm:AttendanceSettingsViewModel"
+             Title="Attendance settings"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="18">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Attendance settings" StyleClass="Title" />
+                    <Label Text="Choose when you want to be reminded." StyleClass="Muted" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid>
+
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="16">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Attendance reminders" FontFamily="OpenSansSemibold" />
+                            <Label Text="Alerts with Present, Absent and Next 5 min" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding RemindersEnabled}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Check-in time" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <TimePicker Time="{Binding CheckInTime}" AutomationId="CheckInTimePicker" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Check-out time" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <TimePicker Time="{Binding CheckOutTime}" AutomationId="CheckOutTimePicker" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Working days" StyleClass="FieldLabel" />
+                        <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" BindableLayout.ItemsSource="{Binding Days}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:DayToggleItem">
+                                    <Border WidthRequest="36" HeightRequest="36" StrokeThickness="1" Margin="0,0,0,6"
+                                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}"
+                                            BackgroundColor="Transparent">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                                        </Border.GestureRecognizers>
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Label Text="{Binding Label}" FontSize="13" HorizontalOptions="Center" VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="TextColor" Value="White" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
+                    </VerticalStackLayout>
+
+                    <Label Text="If you tap Next 5 min on an alert, nothing is marked and the same alert comes back after exactly 5 minutes."
+                           StyleClass="Muted" />
+
+                    <Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                           IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+
+                    <Button Text="Save settings" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}"
+                            AutomationId="SaveAttendanceSettings" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.MeetingEditPage"
+             x:DataType="vm:MeetingEditViewModel"
+             Title="Meeting"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="{Binding ScreenTitle}" StyleClass="Title" />
+                    <Label Text="Reminders work without internet." StyleClass="Muted" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Meeting title" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Title}" Placeholder="e.g. Project Discussion" Keyboard="Default"  />
+                        </Border>
+                        <Label Text="{Binding TitleError}" StyleClass="Error" IsVisible="{Binding TitleError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Description" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Editor Text="{Binding Description}" HeightRequest="80" AutoSize="Disabled" Placeholder="What is this meeting about?" /></Border>
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                            <Label Text="Date" StyleClass="FieldLabel" />
+                            <Border StyleClass="Field"><DatePicker Date="{Binding Date}"  /></Border>
+                        </VerticalStackLayout><Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <VerticalStackLayout Spacing="6"><Label Text="Start time" StyleClass="FieldLabel" /><Border StyleClass="Field"><TimePicker Time="{Binding StartTime}" /></Border></VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6"><Label Text="End time" StyleClass="FieldLabel" /><Border StyleClass="Field"><TimePicker Time="{Binding EndTime}" /></Border></VerticalStackLayout>
+                    </Grid><VerticalStackLayout Spacing="6">
+                        <Label Text="Location" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Location}" Placeholder="Room, address or link" Keyboard="Default"  />
+                        </Border>
+                        
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Participants" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Participants}" Placeholder="Names, separated by commas" Keyboard="Default"  />
+                        </Border>
+                        
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Notes" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Editor Text="{Binding Notes}" HeightRequest="80" AutoSize="Disabled" Placeholder="Agenda, links, reminders" /></Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Reminder" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Picker ItemsSource="{Binding ReminderTexts}" SelectedIndex="{Binding ReminderIndex}" /></Border>
+                    </VerticalStackLayout><Label Text="{Binding ErrorMessage}" StyleClass="Error" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" /><Button Text="Save meeting" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}" AutomationId="SaveMeeting" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.AttendancePage"
+             x:DataType="vm:AttendanceViewModel"
+             Title="Attendance"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="18">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Attendance" StyleClass="Title" />
+                    <Label Text="{Binding TodayText}" StyleClass="Muted" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border StyleClass="Card" Padding="16" IsVisible="{Binding NotificationsOff}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Notifications are off" StyleClass="Heading" />
+                    <Label Text="Allow notifications to get Present / Absent / Next 5 min alerts at your check-in and check-out times." StyleClass="Muted" />
+                    <Button Text="Turn on notifications" Command="{Binding EnableNotificationsCommand}" HeightRequest="46" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Check-in -->
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Check-in" StyleClass="Heading" />
+                            <Label Text="{Binding CheckInSchedule}" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" Padding="12,5" StrokeThickness="0" VerticalOptions="Center"
+                                BackgroundColor="{Binding CheckInColor}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Label Text="{Binding CheckInStatus}" TextColor="White" FontSize="13" FontFamily="OpenSansSemibold" />
+                        </Border>
+                    </Grid>
+                    <Label Text="{Binding CheckInDetail}" StyleClass="Muted" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Present" Command="{Binding MarkCommand}" CommandParameter="CheckIn|Present"
+                                IsEnabled="{Binding IsNotBusy}" AutomationId="CheckInPresent" />
+                        <Button Grid.Column="1" Text="Absent" StyleClass="Outline" Command="{Binding MarkCommand}"
+                                CommandParameter="CheckIn|Absent" IsEnabled="{Binding IsNotBusy}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Check-out -->
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Check-out" StyleClass="Heading" />
+                            <Label Text="{Binding CheckOutSchedule}" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                        <Border Grid.Column="1" Padding="12,5" StrokeThickness="0" VerticalOptions="Center"
+                                BackgroundColor="{Binding CheckOutColor}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Label Text="{Binding CheckOutStatus}" TextColor="White" FontSize="13" FontFamily="OpenSansSemibold" />
+                        </Border>
+                    </Grid>
+                    <Label Text="{Binding CheckOutDetail}" StyleClass="Muted" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Present" Command="{Binding MarkCommand}" CommandParameter="CheckOut|Present"
+                                IsEnabled="{Binding IsNotBusy}" AutomationId="CheckOutPresent" />
+                        <Button Grid.Column="1" Text="Absent" StyleClass="Outline" Command="{Binding MarkCommand}"
+                                CommandParameter="CheckOut|Absent" IsEnabled="{Binding IsNotBusy}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="{Binding InfoMessage}" StyleClass="Success" HorizontalTextAlignment="Center"
+                   IsVisible="{Binding InfoMessage, Converter={StaticResource StringNotEmpty}}" />
+            <Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+            <Label Text="{Binding NextReminderText}" StyleClass="Muted" HorizontalTextAlignment="Center" />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Text="History" StyleClass="Outline" Command="{Binding OpenHistoryCommand}" />
+                <Button Grid.Column="1" Text="Settings" StyleClass="Outline" Command="{Binding OpenSettingsCommand}" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.EmiCalculatorPage"
+             x:DataType="vm:EmiCalculatorViewModel"
+             Title="EMI calculator"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="EMI calculator" StyleClass="Title" />
+                    <Label Text="Monthly instalment on a loan" StyleClass="Muted" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Loan amount (₹)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding AmountText}" Placeholder="e.g. 1000000" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding AmountError}" StyleClass="Error" IsVisible="{Binding AmountError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Interest rate (% per year)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding RateText}" Placeholder="e.g. 8.5" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding RateError}" StyleClass="Error" IsVisible="{Binding RateError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Loan tenure" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding TenureText}" Placeholder="e.g. 20" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding TenureError}" StyleClass="Error" IsVisible="{Binding TenureError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><Label Text="Unit" StyleClass="FieldLabel" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Units}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout><Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Calculate" Command="{Binding CalculateCommand}" />
+                        <Button Grid.Column="1" Text="Reset" StyleClass="Outline" Command="{Binding ResetCommand}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border><Border StyleClass="Card" IsVisible="{Binding HasResult}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Monthly EMI" StyleClass="Muted" />
+                    <Label Text="{Binding EmiText}" FontFamily="OpenSansSemibold" FontSize="32" TextColor="{StaticResource Primary}" />
+                    <ProgressBar Progress="{Binding PrincipalFraction}" />
+                    <Label Text="{Binding SplitText}" StyleClass="Muted" FontSize="12" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Principal amount" StyleClass="Muted" />
+                        <Label Grid.Column="1" Text="{Binding PrincipalText}" FontFamily="OpenSansSemibold" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Total interest" StyleClass="Muted" />
+                        <Label Grid.Column="1" Text="{Binding InterestText}" FontFamily="OpenSansSemibold" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Total payment" StyleClass="Muted" />
+                        <Label Grid.Column="1" Text="{Binding TotalText}" FontFamily="OpenSansSemibold" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

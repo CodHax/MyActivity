@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:MyActivity.Views"
+       x:Class="MyActivity.AppShell"
+       Shell.FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="False"
+       Shell.TabBarIsVisible="False"
+       Shell.TabBarBackgroundColor="{AppThemeBinding Light={StaticResource CardLight}, Dark={StaticResource CardDark}}"
+       Shell.TabBarForegroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource LinkDark}}"
+       Shell.TabBarTitleColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource LinkDark}}"
+       Shell.TabBarUnselectedColor="{AppThemeBinding Light={StaticResource MutedLight}, Dark={StaticResource MutedDark}}">
+
+    <!-- Entry flow: no tab bar -->
+    <ShellContent Route="startup" ContentTemplate="{DataTemplate views:StartupPage}" />
+    <ShellContent Route="login"   ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <!-- Main navigation: bottom tabs (each tab page sets Shell.TabBarIsVisible="True") -->
+    <TabBar>
+        <ShellContent Title="Home"       Icon="tab_home.png"       Route="dashboard"  ContentTemplate="{DataTemplate views:DashboardPage}" />
+        <ShellContent Title="Attendance" Icon="tab_attendance.png" Route="attendance" ContentTemplate="{DataTemplate views:AttendancePage}" />
+        <ShellContent Title="Account"    Icon="tab_account.png"    Route="account"    ContentTemplate="{DataTemplate views:AccountPage}" />
+        <ShellContent Title="Tools"      Icon="tab_tools.png"      Route="tools"      ContentTemplate="{DataTemplate views:ToolsPage}" />
+        <ShellContent Title="More"       Icon="tab_more.png"       Route="more"       ContentTemplate="{DataTemplate views:MorePage}" />
+    </TabBar>
+</Shell>

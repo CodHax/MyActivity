@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.AttendanceHistoryPage"
+             x:DataType="vm:AttendanceHistoryViewModel"
+             Title="Attendance history"
+             Shell.NavBarIsVisible="False">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20,36,20,0" RowSpacing="12">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="History" StyleClass="Title" />
+                <Label Text="Your check-in and check-out records." StyleClass="Muted" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+        </Grid>
+
+        <FlexLayout Grid.Row="1" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="vm:FilterOption">
+                    <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                            Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectCommand}" />
+                        </Border.GestureRecognizers>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Label Text="{Binding Title}" FontSize="14">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="TextColor" Value="White" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Border>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="10">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding IsCustom}">
+                <Border StyleClass="Field">
+                    <DatePicker Date="{Binding FromDate}" MaximumDate="{Binding MaxDate}" />
+                </Border>
+                <Border Grid.Column="1" StyleClass="Field">
+                    <DatePicker Date="{Binding ToDate}" MaximumDate="{Binding MaxDate}" />
+                </Border>
+            </Grid>
+            <Label Text="{Binding SummaryText}" StyleClass="Muted" />
+            <Label Text="{Binding ErrorMessage}" StyleClass="Error"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="0,40" Spacing="6" HorizontalOptions="Center">
+                    <Label Text="No attendance records" StyleClass="Heading" HorizontalOptions="Center" />
+                    <Label Text="Records appear here after you mark attendance." StyleClass="Muted" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:AttendanceDayItem">
+                    <Border StyleClass="Card" Padding="14" Margin="0,0,0,10">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <VerticalStackLayout WidthRequest="48" VerticalOptions="Center">
+                                <Label Text="{Binding DayNumber}" FontFamily="OpenSansSemibold" FontSize="24" HorizontalOptions="Center" />
+                                <Label Text="{Binding MonthText}" StyleClass="Muted" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <Label Text="{Binding WeekdayText}" FontFamily="OpenSansSemibold" />
+                                <Label Text="{Binding CheckInText, StringFormat='In: {0}'}" StyleClass="Muted" />
+                                <Label Text="{Binding CheckOutText, StringFormat='Out: {0}'}" StyleClass="Muted" />
+                            </VerticalStackLayout>
+                            <Border Grid.Column="2" Padding="12,5" StrokeThickness="0" VerticalOptions="Center"
+                                    BackgroundColor="{Binding StatusColor}">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                <Label Text="{Binding StatusText}" TextColor="White" FontSize="13" FontFamily="OpenSansSemibold" />
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

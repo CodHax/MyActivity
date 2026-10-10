@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.TaskEditPage"
+             x:DataType="vm:TaskEditViewModel"
+             Title="Task"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="{Binding ScreenTitle}" StyleClass="Title" />
+                    <Label Text="Add a date or reminder if you need one." StyleClass="Muted" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Title" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Title}" Placeholder="e.g. Complete GST reconciliation report" Keyboard="Default"  />
+                        </Border>
+                        <Label Text="{Binding TitleError}" StyleClass="Error" IsVisible="{Binding TitleError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Description" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field"><Editor Text="{Binding Description}" HeightRequest="90" AutoSize="Disabled" Placeholder="Details (optional)" /></Border>
+                    </VerticalStackLayout><Label Text="Priority" StyleClass="FieldLabel" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Priorities}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout><VerticalStackLayout IsVisible="{Binding IsEditing}" Spacing="6"><Label Text="Status" StyleClass="FieldLabel" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Statuses}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout></VerticalStackLayout><Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Due date" FontFamily="OpenSansSemibold" VerticalOptions="Center" />
+                        <Switch Grid.Column="1" IsToggled="{Binding HasDate}" />
+                    </Grid><Border StyleClass="Field" IsVisible="{Binding HasDate}"><DatePicker Date="{Binding Date}" /></Border><Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Reminder" FontFamily="OpenSansSemibold" VerticalOptions="Center" />
+                        <Switch Grid.Column="1" IsToggled="{Binding HasReminder}" />
+                    </Grid><Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding HasReminder}">
+                        <Border StyleClass="Field"><DatePicker Date="{Binding ReminderDate}" /></Border>
+                        <Border Grid.Column="1" StyleClass="Field"><TimePicker Time="{Binding ReminderTime}" /></Border>
+                    </Grid><Label Text="{Binding ErrorMessage}" StyleClass="Error" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" /><Button Text="Save task" Command="{Binding SaveCommand}" IsEnabled="{Binding IsNotBusy}" AutomationId="SaveTask" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

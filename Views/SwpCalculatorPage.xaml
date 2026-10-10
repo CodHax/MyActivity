@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.SwpCalculatorPage"
+             x:DataType="vm:SwpCalculatorViewModel"
+             Title="SWP calculator"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20,36,20,28" Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="SWP calculator" StyleClass="Title" />
+                    <Label Text="Plan regular withdrawals" StyleClass="Muted" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+            </Grid><Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Initial investment (₹)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding InitialText}" Placeholder="e.g. 1000000" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding InitialError}" StyleClass="Error" IsVisible="{Binding InitialError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Expected annual return (%)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding RateText}" Placeholder="e.g. 8" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding RateError}" StyleClass="Error" IsVisible="{Binding RateError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Monthly withdrawal (₹)" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding WithdrawalText}" Placeholder="e.g. 8000" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding WithdrawalError}" StyleClass="Error" IsVisible="{Binding WithdrawalError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><VerticalStackLayout Spacing="6">
+                        <Label Text="Investment duration" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding DurationText}" Placeholder="e.g. 10" Keyboard="Numeric"  />
+                        </Border>
+                        <Label Text="{Binding DurationError}" StyleClass="Error" IsVisible="{Binding DurationError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout><Label Text="Unit" StyleClass="FieldLabel" /><FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Units}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout><Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Calculate" Command="{Binding CalculateCommand}" />
+                        <Button Grid.Column="1" Text="Reset" StyleClass="Outline" Command="{Binding ResetCommand}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border><Border StyleClass="Card" IsVisible="{Binding HasResult}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Remaining amount" StyleClass="Muted" />
+                    <Label Text="{Binding RemainingText}" FontFamily="OpenSansSemibold" FontSize="32" TextColor="{StaticResource Primary}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Total withdrawn" StyleClass="Muted" />
+                        <Label Grid.Column="1" Text="{Binding WithdrawnText}" FontFamily="OpenSansSemibold" />
+                    </Grid><Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Estimated growth / return" StyleClass="Muted" />
+                        <Label Grid.Column="1" Text="{Binding GrowthText}" FontFamily="OpenSansSemibold" />
+                    </Grid><Label Text="{Binding NoteText}" StyleClass="Error" IsVisible="{Binding HasNote}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

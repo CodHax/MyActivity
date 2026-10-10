@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             xmlns:controls="clr-namespace:MyActivity.Views.Controls"
+             x:Class="MyActivity.Views.TasksPage"
+             x:DataType="vm:TasksViewModel"
+             Title="Tasks and notes"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20,36,20,0" RowSpacing="10">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Tasks and notes" StyleClass="Title" />
+                <Label Text="Plan your work, set reminders" StyleClass="Muted" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="Back" StyleClass="Link" Command="{Binding BackCommand}" VerticalOptions="Start" />
+        </Grid>
+        <FlexLayout Grid.Row="1" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Filters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterOption">
+                        <Border StrokeThickness="1" Padding="14,8" Margin="0,0,8,8" BackgroundColor="Transparent"
+                                Stroke="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SelectCommand}" /></Border.GestureRecognizers>
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Label Text="{Binding Title}" FontSize="14">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        <VerticalStackLayout Grid.Row="2">
+            <Label Text="{Binding InfoMessage}" StyleClass="Success" IsVisible="{Binding InfoMessage, Converter={StaticResource StringNotEmpty}}" />
+            <Label Text="{Binding ErrorMessage}" StyleClass="Error" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Items}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="0,40" Spacing="6" HorizontalOptions="Center">
+                    <Label Text="{Binding EmptyTitle}" StyleClass="Heading" HorizontalOptions="Center" />
+                    <Label Text="Tap + to add one." StyleClass="Muted" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TaskRowItem">
+                    <Border StyleClass="Card" Padding="14" Margin="0,0,0,10">
+                        <VerticalStackLayout Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Label Text="{Binding Title}" TextDecorations="{Binding TitleDecorations}" FontFamily="OpenSansSemibold" FontSize="16" />
+                                <controls:StatusPill Grid.Column="1" Text="{Binding PriorityText}" PillColor="{Binding PriorityColor}" />
+                            </Grid>
+                            <Label Text="{Binding DescriptionText}" StyleClass="Muted" IsVisible="{Binding HasDescription}" LineBreakMode="TailTruncation" MaxLines="2" />
+                            <Label Text="{Binding DetailText}" StyleClass="Muted" FontSize="12" IsVisible="{Binding HasDetail}" />
+                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                                <Button Text="{Binding ToggleText}" Command="{Binding ToggleCommand}" HeightRequest="40" FontSize="14" />
+                                <Button Grid.Column="1" Text="Edit" StyleClass="Outline" Command="{Binding EditCommand}" HeightRequest="40" FontSize="14" />
+                                <Button Grid.Column="2" Text="Delete" StyleClass="Link" Command="{Binding DeleteCommand}" HeightRequest="40" FontSize="14" TextColor="{StaticResource Danger}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="3" Text="+" StyleClass="Fab" Command="{Binding AddCommand}" AutomationId="AddTask" />
+    </Grid>
+</ContentPage>

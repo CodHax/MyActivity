@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MyActivity.ViewModels"
+             x:Class="MyActivity.Views.LoginPage"
+             x:DataType="vm:LoginViewModel"
+             Title="Log in">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,56,24,24" Spacing="24">
+
+            <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Border WidthRequest="80" HeightRequest="80" StrokeThickness="0"
+                        BackgroundColor="{StaticResource Primary}" HorizontalOptions="Center">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="26" /></Border.StrokeShape>
+                    <Label Text="✓" TextColor="White" FontSize="40" FontAttributes="Bold"
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <Label Text="My Activity" StyleClass="Title" HorizontalOptions="Center" />
+                <Label Text="Log in to your workday." StyleClass="Muted" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <Border StyleClass="Card">
+                <VerticalStackLayout Spacing="14">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Email" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Entry Text="{Binding Email}" Placeholder="you@company.com" Keyboard="Email"
+                                   IsTextPredictionEnabled="False" ReturnType="Next" AutomationId="LoginEmail" />
+                        </Border>
+                        <Label Text="{Binding EmailError}" StyleClass="Error"
+                               IsVisible="{Binding EmailError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Password" StyleClass="FieldLabel" />
+                        <Border StyleClass="Field">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Entry Text="{Binding Password}" Placeholder="Your password"
+                                       IsPassword="{Binding IsPasswordHidden}" ReturnType="Done"
+                                       ReturnCommand="{Binding LoginCommand}" AutomationId="LoginPassword" />
+                                <Button Grid.Column="1" Text="{Binding PasswordToggleText}" StyleClass="Link"
+                                        Command="{Binding TogglePasswordCommand}" WidthRequest="64" Padding="0" />
+                            </Grid>
+                        </Border>
+                        <Label Text="{Binding PasswordError}" StyleClass="Error"
+                               IsVisible="{Binding PasswordError, Converter={StaticResource StringNotEmpty}}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Keep me logged in" VerticalOptions="Center" />
+                        <Switch Grid.Column="1" IsToggled="{Binding RememberMe}" />
+                    </Grid>
+
+                    <Label Text="{Binding ErrorMessage}" StyleClass="Error" HorizontalTextAlignment="Center"
+                           IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmpty}}" />
+
+                    <Button Text="Log in" Command="{Binding LoginCommand}" IsEnabled="{Binding IsNotBusy}"
+                            AutomationId="LoginButton" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+                    <Button Text="Forgot password?" StyleClass="Link" Command="{Binding GoToResetPasswordCommand}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="2">
+                <Label Text="New employee?" StyleClass="Muted" VerticalOptions="Center" />
+                <Button Text="Create account" StyleClass="Link" Command="{Binding GoToSignupCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
